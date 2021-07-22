@@ -24,12 +24,25 @@ def connect():
 	# 		print('Connection closed.')
 	return conn
 
+
 def show_tables():
 	# connect to database and get the cursor
 	conn= connect()
 	cur= conn.cursor(dictionary=True)
 
 	sqlEntry= 'SHOW TABLES;'
+	cur.execute(sqlEntry)
+	output= cur.fetchall()
+	conn.close()
+	return output
+
+
+def create_db_table(tableName):
+	# connect to database and get the cursor
+	conn= connect()
+	cur= conn.cursor(dictionary=True)
+
+	sqlEntry= 'CREATE TABLE %s (TaskID INT NOT NULL AUTO_INCREMENT, TaskTitle varchar(50), ToDueDate datetime, CreatedBy int, DoneBy int, PRIMARY KEY (TaskID))'%tableName
 	cur.execute(sqlEntry)
 	output= cur.fetchall()
 	conn.close()
@@ -48,15 +61,16 @@ def read_table(tableName):
 	return output
 
 
-def insert_todo_task(tableName, newEntry, newEntryDesc, userID, dueDate ):
+def insert_todo_task(tableName, newEntry, userID, dueDate):
 	# connect to database and get the cursor
 	conn= connect()
 	cur= conn.cursor()
 
-	sqlEntry= "INSERT INTO %s (TaskTitle, TaskDesc, CreatedBy, ToDueDate) VALUES ('%s', '%s', %s, '%s');"%(tableName, newEntry, newEntryDesc, userID, dueDate)
+	sqlEntry= "INSERT INTO %s (TaskTitle, CreatedBy, ToDueDate) VALUES ('%s', %s, '%s');"%(tableName, newEntry, userID, dueDate)
 	cur.execute(sqlEntry)
 	conn.commit()
 	conn.close()
+
 
 def update_todo_task(tableName, entryTitle, dueDate, taskID):
 	# connect to database and get the cursor
@@ -69,7 +83,6 @@ def update_todo_task(tableName, entryTitle, dueDate, taskID):
 	conn.close()
 
 
-
 def complete_todo_task(tableName, taskID, doneBy):
 	# connect to database and get the cursor
 	conn= connect()
@@ -79,6 +92,7 @@ def complete_todo_task(tableName, taskID, doneBy):
 	cur.execute(sqlEntry)
 	conn.commit()
 	conn.close()
+
 
 def delete_todo_task(tableName, taskID):
 	# connect to database and get the cursor

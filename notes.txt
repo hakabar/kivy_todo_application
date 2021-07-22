@@ -1,0 +1,8 @@
+ListItemWithCheckbox 
+	- Used to display each todo task from list.
+	- kivy design is defined in the main.kv (but not called)
+	- Class defined on main.py
+	- Items ListItemWIthCheckbox are created on:
+		- MainApp.on_start()
+		- MAinApp.save_data_entry()
+		- MainApp.save_task()

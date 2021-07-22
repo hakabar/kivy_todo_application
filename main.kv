@@ -1,13 +1,36 @@
+
 <ListItemWithCheckbox>:
+	# todo item from the todo list displayed in app
 	id: the_list_item
 	on_release: app.show_detail(the_list_item)
 
 	IconLeftWidget:
+		#Icon displayed at the left of each ListItemWithCheckbox
 		icon: root.icon
 
 	RightCheckbox:
+		# Checkbox at the right of each ListItemWithCheckbox
 		on_release: app.mark(check, the_list_item)
 		id: check
+
+
+
+<RightContentCls>
+	#For the Dropdown menu buttons (MDIcontButton with id:btnList)
+	disabled: True
+
+	MDIconButton:
+		icon: root.icon
+		user_font_size: "16sp"
+		pos_hint: {"center_y": .5}
+
+	MDLabel:
+		text: root.text
+		font_style: "Caption"
+		size_hint_x: None
+		width: self.texture_size[0]
+		text_size: None, None
+
 
 
 <CustomToolbar>:
@@ -17,10 +40,12 @@
 	spacing: "12dp"
 
 	MDIconButton:
+		# button to display the todo lists submenu
 		id: btnList
 		icon: "menu"
 		pos_hint: {"center_y": .5}
 		on_release: app.menuList.open()
+		#on_release: app.dropdown.open()
 
 	MDLabel:
 		text: "ToDo"
@@ -29,12 +54,14 @@
 		width: self.texture_size[0]
 		text_size: None, None
 		font_style: 'H6'
-	
+
 	MDIconButton:
+		#Button to add a new todo task in current todo list
 		id: addBtn
 		icon: "plus"
 		pos_hint: {"center_y": .5}
 		on_release: app.show_task_dialog()
+
 
 
 <Home>:
@@ -67,9 +94,6 @@
 					MDList:
 						id: container
 
-
-	
-
 			MDBottomNavigationItem:
 				name: 'completed_tasks'
 				text: 'Completed'
@@ -79,7 +103,6 @@
 					MDList:
 						id: completed_container
 
-
 			MDBottomNavigationItem:
 				name: 'stats'
 				text: 'Your Stats'
@@ -88,7 +111,6 @@
 				BoxLayout:
 					orientation: 'vertical'
 					padding: "10dp"
-
 
 					MDLabel:
 						text: "My Stats"
@@ -109,15 +131,14 @@
 
 						MDProgressBar:
 							value: 40
-						
+
 						MDLabel:
 							text: '100%'
-					
+
 					MDLabel:
 						text: '40%'
 						halign: 'center'
 						font_style: 'H4'
-
 
 
 
@@ -129,7 +150,6 @@
 
 	GridLayout:
 		rows: 1
-		
 
 		MDTextField:
 			id: task_text
@@ -142,7 +162,7 @@
 			icon: 'calendar'
 			on_release: root.show_date_picker()
 			padding: '10dp'
-	
+
 	MDLabel:
 		id: date_text
 
@@ -157,21 +177,42 @@
 			on_release: app.close_dialog()
 
 
+<NewTableDialog>:
+	orientation: 'vertical'
+	spacing: "10dp"
+	size_hint: 1, None
+	height: "130dp"
+	GridLayout:
+		rows: 2
+		MDTextField:
+			id: new_table_name
+			hint_text: "Define list name"
+			pos_hint: {"center_y": .4}
+			color_mode: 'accent'
+		BoxLayout:
+			orientation: 'horizontal'
+			MDRaisedButton:
+				id: new_table_create_button
+				text: "CREATE"
+				on_release: (app.create_new_todo_list(), app.close_detail_dialog())
+			MDFlatButton:
+				id: new_table_cancel_button
+				text: 'CANCEL'
+				on_release: app.close_detail_dialog()
+
+
+
 <TaskDetailDialog>:
 	orientation: 'vertical'
 	spacing: "10dp"
 	size_hint: 1, None
 	height: "130dp"
-
 	MDLabel:
 		id: task_detail_text
-	
 	MDLabel:
 		id: task_detail_date
-
 	BoxLayout:
 		orientation: 'horizontal'
-
 		MDRaisedButton:
 			id: task_edit_button
 			text: "EDIT"
@@ -179,9 +220,7 @@
 		# MDFlatButton:
 		#     text: 'CANCEL'
 		#     on_release: app.close_detail_dialog()
-		
 		MDLabel:
-
 		MDIconButton:
 			icon: 'trash-can-outline'
 			on_release: (root.delete_task_dialog(), app.close_detail_dialog())
@@ -197,7 +236,6 @@
 
 	GridLayout:
 		rows: 1
-		
 
 		MDTextField:
 			id: edit_task_text
@@ -209,7 +247,7 @@
 			icon: 'calendar'
 			on_release: root.show_date_picker()
 			padding: '10dp'
-	
+
 	MDLabel:
 		id: edit_date_text
 
